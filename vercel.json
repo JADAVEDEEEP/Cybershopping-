@@ -1,10 +1,6 @@
 {
-  "version": 2,
-  "public": "Assets",
-  "builds": [
-    { "src": "Assets/index.html", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "Assets/$1" }
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/Assets/$1" }
   ]
 }
