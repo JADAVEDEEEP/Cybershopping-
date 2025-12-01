@@ -1,0 +1,105 @@
+
+  /////////////////////////////////////////////////////////////////////GET ALL PRODCUTS ////////////////////////////////////////////////////////
+// This function fetches products from the API and shows them on the page
+async function fetchAndDisplayProducts() {
+    try {
+        // 1️⃣ Fetch data from FakeStore API (limit 8 products)
+        const response = await fetch('https://fakestoreapi.com/products?limit=8');
+
+        // 2️⃣ Convert the fetched JSON string into a JavaScript array of objects
+        const products = await response.json();
+
+        // 3️⃣ Get the container div from HTML where we will put our product cards
+        const productContainer = document.getElementById('productContainer');
+
+        // 4️⃣ Loop through each product in the array
+        products.map(product => {
+            // 4a️⃣ Destructure the product object so we can easily use id, title, image, and price
+            const { id, title, image, price } = product;
+
+            // 4b️⃣ Create a HTML card for each product using template literals
+            const productCard = `
+                <div class="col-lg-3 col-md-6 col-sm-12 p-4 mb-1">
+                    <div class="card h-100 d-flex align-items-center justify-content-center" 
+                         onclick="window.location.href='OneProduct.html?id=${id}'" 
+                         id="card-${id}" 
+                         style="width: 100%; height: 100%; border: none; text-align: center; margin: 0 auto; background-color: #f8f9fa;">
+                         
+                        <div class="card-body d-flex flex-column align-items-center p-3 justify-content-between" style="height: 400px;">
+                            <img src="${image}" 
+                                 alt="${title}" 
+                                 style="height: 190px; width: 100%; object-fit: contain; border-radius: 5px; margin-bottom: 8px; background-color: white;">
+                                 
+                            <h5 class="card-title p-2" 
+                                style="font-size: 0.9rem; font-weight: bold; margin-bottom: 6px;">
+                                ${title}
+                            </h5>
+                            <h5 class="card-title p-2" 
+                                style="font-size: 0.9rem; font-weight: bold; margin-bottom: 6px;">
+                                INR ${price}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // 4c️⃣ Add the product card to the container in the HTML
+            // Every loop iteration appends the new card below the previous one
+            productContainer.innerHTML += productCard;
+        });
+    } catch (error) {
+        // 5️⃣ If something goes wrong (like network error), show it in the console
+        console.error('Error fetching data:', error);
+    }
+}
+
+// 6️⃣ Call the function to fetch and display products when the page loads
+fetchAndDisplayProducts();
+
+
+///////////////////////////////////////////////////////////////////GET API FOR THE DOSCOUNTS////////////////////////////////////////////////////////////
+async function fetchAndDisplayCategory() {
+    try {
+      const response = await fetch('https://fakestoreapi.com/products?limit=4');
+      const products = await response.json();
+  
+      const productContainer = document.getElementById('catrgoryContainer');
+  
+      products.map(product => {
+        const { id, title, image, price } = product;
+  
+        
+        const discountedPrice = (price * 0.5).toFixed(2);
+  
+        const productCard = `
+          <div class="col-lg-3 col-md-6 col-sm-12 mt-5">
+            <div class="card bg-light h-110 d-flex align-items-center justify-content-center" 
+              id="card-${id}" 
+              style="width: 250px; height: 400px; border: none;  text-align: center; margin: 0 auto;">
+              <div class="card-body d-flex flex-column align-items-center p-4 justify-content-center"onclick="window.location.href='OneProduct.html?id=${id}'">
+                <img src="${image}" 
+                    alt="${title}" 
+                    style="height: 200px; width: 200px; object-fit: contain; margin-bottom: 8px;">
+                <h5 class="card-title p-2" 
+                    style="font-size: 0.9rem; font-weight: bold; margin-bottom: 6px;">
+                    ${title}
+                </h5>
+                <h5 class="card-title p-2" 
+                    style="font-size: 0.9rem; font-weight: bold; margin-bottom: 6px;">
+                    <s style="color: red;">INR ${price}</s> INR ${discountedPrice}
+                </h5>
+                 
+            </div>
+          </div>
+        `;
+        productContainer.innerHTML += productCard;
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  
+  fetchAndDisplayCategory();
+  
+
+

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="stylesheet" href="../Css/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+ 
+        <title>Responsive Navbar</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        </head>
+        <body>
+          
+          <!------------------------------------------------------------SECTION 1------------------------------------------------------------>
+          <header class="container ">
+            <div class="logo-section">
+                <nav class="navbar navbar-expand-lg navbar-light w-100">
+                    <div class="container-fluid">
+                      <h5><a class="nav-link display-3 fw-bold mx-2" href="Index.html">cyber</a></h5>
+                        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+        
+                        <div class="collapse navbar-collapse ms-auto" id="navbarNavDropdown">
+                            <input type="text" name="search" class="form-control-lg bg-light input-lg mx-4 col-4 d-none d-lg-block" style="border-radius: 5px; border-color: rgba(245, 245, 245, 1); border:none;" placeholder="Search">
+                            <ul class="navbar-nav ms-auto" style="justify-content: center;margin-left:40px;">
+                                <li class="nav-item">
+                                    <a class="nav-link mx-2" aria-current="page" id="log" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link mute mx-2" href="FilterPage.html">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link mute mx-2" href="#">ContactUs</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link mute mx-2" href="#" tabindex="-1" aria-disabled="true">Blog</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link mx-3">
+                                        <i class="far fa-heart"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="AddToCart.html" class="nav-link mx-3">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link mx-3">
+                                        <i class="fa-regular fa-user"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+           </header>
+      
+         <hr>
+        
+         <div class="container my-5">
+          <h2 class="mb-4 text-center fw-bold">Your Orders</h2>
+          <div id="ordersContainer"></div>
+        </div>
+        
+        <script>
+          const ordersContainer = document.getElementById('ordersContainer');
+          const orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+        
+          if (orderHistory.length === 0) {
+            ordersContainer.innerHTML = `
+              <div class="col-12 text-center">
+                <div class="alert alert-warning" role="alert">
+                  🛒 You haven't placed any orders yet.
+                </div>
+              </div>
+            `;
+          } else {
+            let totalPaid = 0;
+            let itemsHTML = "";
+            let orderId = "";
+            let orderDate = "";
+        
+            orderHistory.forEach(order => {
+              orderId = order.id;
+              orderDate = order.date;
+              order.items.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                totalPaid += itemTotal;
+                itemsHTML += `
+                  <div class="row mb-3 align-items-center">
+                    <!-- <div class="col-md-2">
+                      <img src="${item.image || 'https://via.placeholder.com/100'}" class="img-fluid" alt="${item.title}">
+                    </div> -->
+                    <div class="col-md-2 text-center">
+                      <p class="text-muted mb-0">${item.title}</p>
+                    </div>
+                    <div class="col-md-2 text-center">
+                      <p class="text-muted mb-0 small">Qty: ${item.quantity}</p>
+                    </div>
+                    <div class="col-md-2 text-center">
+                      <p class="text-muted mb-0 small">Price: ₹${item.price}</p>
+                    </div>
+                    <div class="col-md-2 text-center">
+                      <p class="text-muted mb-0 small">Total: ₹${itemTotal}</p>
+                    </div>
+                    <div class="col-md-2 text-center">
+                      <p class="text-muted mb-0 small">Status: Processing</p>
+                    </div>
+                  </div>
+                  <hr>
+                `;
+              });
+            });
+        
+            ordersContainer.innerHTML = `
+              <section class="h-100 gradient-custom">
+                <div class="container py-5 h-100">
+                  <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-lg-10 col-xl-8">
+                      <div class="card" style="border-radius: 10px;">
+                        <div class="card-header px-4 py-5">
+                          <h5 class="text-muted mb-0">Thanks for your Order! <span style="color: #a8729a;">Order ID: ${orderId}</span></h5>
+                          <p class="small text-muted mt-1 mb-0">Order Date: ${orderDate}</p>
+                        </div>
+                        <div class="card-body p-4">
+                          <div class="d-flex justify-content-between align-items-center mb-4">
+                            <p class="lead fw-normal mb-0" style="color: #a8729a;">Receipt</p>
+                          </div>
+                          <div class="card shadow-0 border mb-4">
+                            <div class="card-body">
+                              ${itemsHTML}
+                              <div class="row mt-4 d-flex align-items-center">
+                                <div class="col-md-2">
+                                  <p class="text-muted mb-0 small">Track Order</p>
+                                </div>
+                                <div class="col-md-10">
+                                  <div class="progress" style="height: 6px; border-radius: 16px;">
+                                    <div class="progress-bar" role="progressbar"
+                                      style="width: 50%; border-radius: 16px; background-color: #a8729a;" aria-valuenow="50"
+                                      aria-valuemin="0" aria-valuemax="100"></div>
+                                  </div>
+                                  <div class="d-flex justify-content-around mb-1">
+                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Processing</p>
+                                    <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+        
+                          <div class="d-flex justify-content-between pt-2">
+
+                          </div>
+        
+                          <!-- <div class="d-flex justify-content-between pt-2">
+                            <p class="text-muted mb-0">Invoice Number : 788152</p>
+                            <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> ₹19.00</p>
+                          </div>
+        
+                          <div class="d-flex justify-content-between">
+                            <p class="text-muted mb-0">Invoice Date : ${orderDate}</p>
+                            <p class="text-muted mb-0"><span class="fw-bold me-4">GST 18%</span> ₹${Math.floor(totalPaid * 0.18)}</p>
+                          </div> -->
+        
+                          <!-- <div class="d-flex justify-content-between mb-5">
+                            <p class="text-muted mb-0">Receipts Voucher : 18KU-62IIK</p>
+                            <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free</p>
+                          </div> -->
+                        </div>
+                        <div class="card-footer border-0 px-4 py-5"
+                          style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                          <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total Paid:
+                            <span class="h2 mb-0 ms-2">₹${totalPaid}</span></h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            `;
+          }
+        </script>
+        
+
+          
+  
+ <!------------------------------------------------------------SECTION 8------------------------------------------------------------>
+   
+ <section class="Eith-section text-center p-5 mt-5" style="background-color: rgba(0, 0, 0, 1);height:500px">
+  <div class="container text-center text-md-start mt-5">
+    <div class="row d-flex justify-content-between"> 
+      
+      <div class="col-md-3 col-lg-4 text-white">
+        <h1 class="fs-3">Cyber</h1>
+        <p class="fs-6 text-white fade-in mt-4" style="opacity: 0.5;">
+          We are a residential interior design firm located in Portland. Our boutique-studio offers more than
+        </p>
+        <div class="d-flex justify-content-start align-items-start gap-1 py-5">
+          <img src="../ImgAssets/Twitter.png" alt="Twitter Logo" class="img-fluid mx-3">
+          <img src="../ImgAssets/Facebook.png" alt="Facebook Logo" class="img-fluid mx-3">
+          <img src="../ImgAssets/Tiktok.png" alt="TikTok Logo" class="img-fluid mx-3">
+          <img src="../ImgAssets/Instagram.png" alt="Instagram Logo" class="img-fluid mx-3">
+        </div>
+      </div>
+
+      <div class="col-md-2 col-lg-2 text-white text-center">
+        <h6 class="text-white fs-4 fw-bold mb-4">
+          Services
+        </h6>
+        <p style="opacity: 0.6;">Bonus Program</p>
+        <p style="opacity: 0.6;">Gift Cards</p>
+        <p style="opacity: 0.6;">Credit and Payment</p>
+        <p style="opacity: 0.6;">Service Contracts</p>
+        <p style="opacity: 0.6;">On-Cash Account</p>
+        <p style="opacity: 0.6;">Payment</p>
+      </div>
+
+      <div class="col-md-6 col-lg-6 text-white text-center">
+        <h6 class="text-white fs-4 fw-bold mb-4">
+          Assistance to the Buyer
+        </h6>
+        <p style="opacity: 0.6;">
+          <a href="#!" class="tex-start"></a>
+        </p>
+        <p style="opacity: 0.6;">Find an order</p>
+        <p style="opacity: 0.6;">Terms of delivery</p>
+        <p style="opacity: 0.6;">Exchange and return of goods</p>
+        <p style="opacity: 0.6;">Guarantee</p>
+        <p style="opacity: 0.6;">Terms of use of the site</p>
+        
+      </div>
+
+    </div>
+  </div>
+  
+</section>
+
+
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">     
+    
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFx2eVPIIhDbfgy2ZzOluHVRnHppE7RZC2wqi2UAKQSA8zBtQ+8W1T4K5g" crossorigin="anonymous"></script>
+    </body>
+    <script src="../JS/Sidebar.js"></script>
+    <script src="../JS/Shipping.js"></script>
+    </html>
+    
