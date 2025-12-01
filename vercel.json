@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "public": true,
+  "public": "Assets",
   "builds": [
-    { "src": "**/*", "use": "@vercel/static" }
+    { "src": "Assets/index.html", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/$1" }
+    { "src": "/(.*)", "dest": "Assets/$1" }
   ]
 }
